@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ToneForge+ Feature Showcase</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f5f5f5;
+            line-height: 1.6;
+        }
+        h1 {
+            color: #21808d;
+            border-bottom: 3px solid #21808d;
+            padding-bottom: 10px;
+        }
+        h2 {
+            color: #134252;
+            margin-top: 30px;
+        }
+        .feature-card {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .feature-card h3 {
+            color: #21808d;
+            margin-top: 0;
+        }
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+        .feature-item {
+            background: #f8f8f8;
+            padding: 15px;
+            border-radius: 6px;
+            border-left: 4px solid #21808d;
+        }
+        .feature-item strong {
+            color: #134252;
+            display: block;
+            margin-bottom: 5px;
+        }
+        .shortcut {
+            background: #134252;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 0.9em;
+        }
+        .badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 0.85em;
+            font-weight: 600;
+            margin-right: 8px;
+        }
+        .badge-new { background: #32b8c6; color: white; }
+        .badge-enhanced { background: #a7a9a9; color: white; }
+        .badge-feature { background: #eab308; color: #134252; }
+        ul {
+            line-height: 1.8;
+        }
+        .highlight {
+            background: #fff3cd;
+            padding: 2px 6px;
+            border-radius: 3px;
+        }
+        code {
+            background: #f4f4f4;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: monospace;
+        }
+    </style>
+</head>
+<body>
+    <h1>🎹 ToneForge+ Feature Showcase</h1>
+    
+    <div class="feature-card">
+        <h3>Overview</h3>
+        <p>ToneForge+ is an advanced web-based music composition workstation featuring three powerful composition modes, an expanded instrument library, custom instrument creation, and professional keyboard shortcuts.</p>
+    </div>
+
+    <h2>🎼 Three Composition Modes</h2>
+    
+    <div class="feature-card">
+        <span class="badge badge-enhanced">ENHANCED</span>
+        <h3>1. Visual Sequencer</h3>
+        <p>Traditional grid-based pattern sequencer with 16-step patterns.</p>
+        <ul>
+            <li>Multiple tracks with different instruments</li>
+            <li>Click to activate/deactivate notes</li>
+            <li>Real-time playback</li>
+            <li>Visual feedback for active notes</li>
+        </ul>
+    </div>
+
+    <div class="feature-card">
+        <span class="badge badge-new">NEW</span>
+        <h3>2. Score Editor</h3>
+        <p>Traditional music notation with visual staff representation.</p>
+        <ul>
+            <li><strong>Visual Staff:</strong> See your notes on a treble clef staff</li>
+            <li><strong>Note Input:</strong> Click to add notes with specific pitch and duration</li>
+            <li><strong>Musical Parameters:</strong>
+                <ul>
+                    <li>Tempo: 40-240 BPM</li>
+                    <li>Time Signature: 4/4, 3/4, 6/8, 2/4</li>
+                    <li>Key Signature: C Major, G Major, D Major, F Major, A Minor</li>
+                </ul>
+            </li>
+            <li><strong>Duration Options:</strong> Whole, Half, Quarter, Eighth, Sixteenth notes</li>
+            <li><strong>Playback:</strong> Hear your composed score with any instrument</li>
+        </ul>
+    </div>
+
+    <div class="feature-card">
+        <span class="badge badge-enhanced">ENHANCED</span>
+        <h3>3. Live Coding</h3>
+        <p>Code-based pattern creation with real-time feedback.</p>
+        <ul>
+            <li>Simple syntax for musical patterns</li>
+            <li>Real-time pattern parsing</li>
+            <li>Visual waveform feedback</li>
+            <li>Pattern library with examples</li>
+        </ul>
+        <p><strong>Example:</strong></p>
+        <pre><code>bpm:120
+instr:violin
+melody: [C4-4n, E4-4n, G4-4n, C5-4n]
+rep(melody, 4)</code></pre>
+    </div>
+
+    <h2>⌨️ Keyboard Shortcuts</h2>
+    
+    <div class="feature-card">
+        <span class="badge badge-new">NEW</span>
+        <h3>Professional Keyboard Shortcuts</h3>
+        <p>Work faster with Command/Control-based shortcuts that don't interfere with browser shortcuts.</p>
+        
+        <div class="feature-grid">
+            <div class="feature-item">
+                <strong><span class="shortcut">Space</span></strong>
+                Play/Pause in current tab
+            </div>
+            <div class="feature-item">
+                <strong><span class="shortcut">Cmd/Ctrl + N</span></strong>
+                Create new score
+            </div>
+            <div class="feature-item">
+                <strong><span class="shortcut">Cmd/Ctrl + S</span></strong>
+                Save composition
+            </div>
+            <div class="feature-item">
+                <strong><span class="shortcut">Cmd/Ctrl + P</span></strong>
+                Play/Pause
+            </div>
+            <div class="feature-item">
+                <strong><span class="shortcut">Cmd/Ctrl + Z</span></strong>
+                Undo last action
+            </div>
+            <div class="feature-item">
+                <strong><span class="shortcut">Ctrl + Enter</span></strong>
+                Play pattern (Live Coding)
+            </div>
+        </div>
+    </div>
+
+    <h2>🎨 Expanded Instrument Library</h2>
+    
+    <div class="feature-card">
+        <span class="badge badge-new">NEW</span>
+        <h3>21+ Professional Instruments</h3>
+        <p>Comprehensive instrument library across multiple categories:</p>
+        
+        <div class="feature-grid">
+            <div class="feature-item">
+                <strong>Strings</strong>
+                Violin
+            </div>
+            <div class="feature-item">
+                <strong>Woodwind</strong>
+                Flute
+            </div>
+            <div class="feature-item">
+                <strong>Brass</strong>
+                Saxophone
+            </div>
+            <div class="feature-item">
+                <strong>Drums</strong>
+                808 Kick, Snare, Tom, Hi-Hat
+            </div>
+            <div class="feature-item">
+                <strong>Keys</strong>
+                Electric Piano, Soft Organ
+            </div>
+            <div class="feature-item">
+                <strong>Synths</strong>
+                Lead Saw, Arp, Bright Synth
+            </div>
+            <div class="feature-item">
+                <strong>Bass</strong>
+                Deep Bass, Sub Bass
+            </div>
+            <div class="feature-item">
+                <strong>Pads</strong>
+                Warm Pad, Ambient Pad
+            </div>
+        </div>
+    </div>
+
+    <h2>🎨 Custom Instrument Maker</h2>
+    
+    <div class="feature-card">
+        <span class="badge badge-new">NEW</span>
+        <h3>Create Your Own Instruments</h3>
+        <p>Revolutionary feature that lets you create custom instruments from audio samples!</p>
+        
+        <h4>How It Works:</h4>
+        <ol>
+            <li><strong>Upload or Record:</strong> Import an audio file or record directly from your microphone</li>
+            <li><strong>Specify Base Note:</strong> Tell the app which note your sample represents (e.g., C4, A3)</li>
+            <li><strong>Automatic Pitch Shifting:</strong> The app calculates and generates all other notes automatically</li>
+            <li><strong>Preview & Tune:</strong> Test your instrument with pitch adjustment (-12 to +12 semitones)</li>
+            <li><strong>Save & Use:</strong> Your custom instrument is saved and ready to use in compositions</li>
+        </ol>
+
+        <h4>Features:</h4>
+        <ul>
+            <li>Support for various audio formats</li>
+            <li>Real-time microphone recording</li>
+            <li>Pitch-shifting algorithm for note generation</li>
+            <li>Preview with adjustable pitch</li>
+            <li>Persistent storage in browser (localStorage)</li>
+            <li>Use in any composition mode</li>
+        </ul>
+    </div>
+
+    <h2>🔧 Technical Highlights</h2>
+    
+    <div class="feature-card">
+        <h3>Built With Modern Web Technologies</h3>
+        <ul>
+            <li><strong>React 18:</strong> Modern UI framework</li>
+            <li><strong>Tone.js 14.8:</strong> Professional Web Audio framework</li>
+            <li><strong>HTML5 Canvas:</strong> For staff notation visualization</li>
+            <li><strong>Web Audio API:</strong> For custom instrument creation</li>
+            <li><strong>MediaRecorder API:</strong> For live audio recording</li>
+            <li><strong>LocalStorage:</strong> For persistent custom instruments</li>
+        </ul>
+    </div>
+
+    <h2>💡 Key Improvements</h2>
+    
+    <div class="feature-card">
+        <h3>What's New in ToneForge+</h3>
+        <ul>
+            <li class="highlight">✨ Three composition modes for different workflows</li>
+            <li class="highlight">⌨️ Professional keyboard shortcuts (Cmd/Ctrl based)</li>
+            <li class="highlight">🎨 Custom instrument creation from samples</li>
+            <li class="highlight">📝 Visual music notation with staff rendering</li>
+            <li class="highlight">🎵 9+ new instruments across 7 new categories</li>
+            <li class="highlight">💾 Persistent storage for custom creations</li>
+            <li class="highlight">🎼 Enhanced musical controls (tempo, time signature, key)</li>
+            <li class="highlight">🎹 Support for multiple note durations</li>
+        </ul>
+    </div>
+
+    <h2>📚 Documentation</h2>
+    
+    <div class="feature-card">
+        <h3>Complete Documentation Available</h3>
+        <ul>
+            <li><strong>README.md:</strong> Project overview and quick start guide</li>
+            <li><strong>FEATURES.md:</strong> Detailed feature descriptions and usage</li>
+            <li><strong>KEYBOARD_SHORTCUTS.md:</strong> Complete keyboard shortcut reference</li>
+        </ul>
+    </div>
+
+    <div class="feature-card" style="background: #e8f5f7; border-left: 4px solid #21808d;">
+        <h3>🚀 Get Started</h3>
+        <p>Open <code>index.html</code> in your browser to start composing music with ToneForge+!</p>
+        <p>Use keyboard shortcuts to speed up your workflow, explore the new instruments, create custom sounds, and compose using your preferred method: visual sequencer, score notation, or live coding.</p>
+    </div>
+
+</body>
+</html>
