@@ -952,6 +952,13 @@ body {
 .category-pad { background: var(--color-bg-3); color: var(--color-teal-500); }
 .category-percussive { background: var(--color-bg-4); color: var(--color-red-500); }
 .category-choir { background: rgba(147, 51, 234, 0.08); color: #9333ea; }
+.category-strings { background: rgba(234, 88, 12, 0.08); color: #ea580c; }
+.category-woodwind { background: rgba(14, 165, 233, 0.08); color: #0ea5e9; }
+.category-brass { background: rgba(234, 179, 8, 0.08); color: #eab308; }
+.category-drums { background: rgba(239, 68, 68, 0.12); color: #ef4444; }
+.category-organ { background: rgba(168, 85, 247, 0.08); color: #a855f7; }
+.category-piano { background: rgba(16, 185, 129, 0.08); color: #10b981; }
+.category-custom { background: rgba(99, 102, 241, 0.08); color: #6366f1; }
 
 .card-actions {
   display: flex;
@@ -1422,6 +1429,148 @@ body {
 /* Utility */
 .hidden {
   display: none;
+}
+
+/* Custom Instrument Maker */
+.custom-instrument-modal .modal {
+  max-width: 650px;
+}
+
+.sample-source-controls {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-16);
+  margin-bottom: var(--space-16);
+}
+
+.sample-info {
+  background: var(--color-bg-3);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-base);
+  padding: var(--space-12);
+  margin-top: var(--space-12);
+}
+
+.sample-info p {
+  font-size: var(--font-size-sm);
+  color: var(--color-text);
+  margin: var(--space-4) 0;
+}
+
+.sample-info strong {
+  color: var(--color-primary);
+}
+
+/* Score Editor */
+.score-editor-container {
+  width: 100%;
+  height: 100%;
+  overflow-y: auto;
+}
+
+.score-editor {
+  padding: var(--space-24);
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.score-header {
+  margin-bottom: var(--space-24);
+}
+
+.score-header h2 {
+  margin-bottom: var(--space-16);
+}
+
+.score-controls {
+  display: flex;
+  gap: var(--space-16);
+  flex-wrap: wrap;
+}
+
+.control-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.control-group label {
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  color: var(--color-text-secondary);
+}
+
+.control-group input,
+.control-group select {
+  padding: var(--space-8);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-base);
+  background: var(--color-surface);
+  color: var(--color-text);
+  font-size: var(--font-size-base);
+}
+
+.staff-container {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-24);
+  margin-bottom: var(--space-24);
+}
+
+.music-staff {
+  width: 100%;
+  height: 200px;
+  border-radius: var(--radius-base);
+}
+
+.note-input-panel {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-16);
+  margin-bottom: var(--space-24);
+}
+
+.note-input-panel h3 {
+  font-size: var(--font-size-lg);
+  margin-bottom: var(--space-12);
+}
+
+.note-input-controls {
+  display: flex;
+  gap: var(--space-12);
+  flex-wrap: wrap;
+  align-items: flex-end;
+}
+
+.notes-list {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-16);
+}
+
+.notes-list h3 {
+  font-size: var(--font-size-base);
+  margin-bottom: var(--space-12);
+}
+
+.notes-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: var(--space-8);
+}
+
+.note-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--color-background);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-base);
+  padding: var(--space-8) var(--space-12);
+  font-size: var(--font-size-sm);
 }
 
 /* Status Messages */
