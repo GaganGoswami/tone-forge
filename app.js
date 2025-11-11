@@ -128,6 +128,86 @@ const initialData = {
       filter: { type: "lowpass", cutoff: 2200, resonance: 2.5 },
       effect: { type: "reverb", wet: 0.1 },
       meta: { bpm: 105, tags: ["brass", "stab", "punchy"] }
+    },
+    {
+      id: "violin",
+      name: "Violin",
+      category: "strings",
+      oscillator: { type: "sawtooth", detune: 2, volume: -8 },
+      envelope: { attack: 0.1, decay: 0.3, sustain: 0.85, release: 0.8 },
+      filter: { type: "lowpass", cutoff: 3500, resonance: 1.8 },
+      effect: { type: "reverb", wet: 0.35 },
+      meta: { bpm: 90, tags: ["violin", "strings", "classical"] }
+    },
+    {
+      id: "flute",
+      name: "Flute",
+      category: "woodwind",
+      oscillator: { type: "sine", detune: 0, volume: -10 },
+      envelope: { attack: 0.05, decay: 0.2, sustain: 0.7, release: 0.5 },
+      filter: { type: "lowpass", cutoff: 4000, resonance: 0.8 },
+      effect: { type: "reverb", wet: 0.25 },
+      meta: { bpm: 100, tags: ["flute", "woodwind", "airy"] }
+    },
+    {
+      id: "saxophone",
+      name: "Saxophone",
+      category: "brass",
+      oscillator: { type: "square", detune: -3, volume: -7 },
+      envelope: { attack: 0.02, decay: 0.3, sustain: 0.8, release: 0.4 },
+      filter: { type: "lowpass", cutoff: 2800, resonance: 2.2 },
+      effect: { type: "reverb", wet: 0.2 },
+      meta: { bpm: 110, tags: ["sax", "brass", "jazz"] }
+    },
+    {
+      id: "snare-drum",
+      name: "Snare Drum",
+      category: "drums",
+      oscillator: { type: "white", detune: 0, volume: -10 },
+      envelope: { attack: 0.001, decay: 0.1, sustain: 0, release: 0.001 },
+      filter: { type: "highpass", cutoff: 2000, resonance: 1.5 },
+      effect: { type: "none", wet: 0 },
+      meta: { bpm: 120, tags: ["snare", "drum", "percussion"] }
+    },
+    {
+      id: "tom-drum",
+      name: "Tom Drum",
+      category: "drums",
+      oscillator: { type: "sine", detune: 0, volume: -5 },
+      envelope: { attack: 0.001, decay: 0.15, sustain: 0, release: 0.001 },
+      filter: { type: "lowpass", cutoff: 400, resonance: 0.8 },
+      effect: { type: "none", wet: 0 },
+      meta: { bpm: 120, tags: ["tom", "drum", "percussion"] }
+    },
+    {
+      id: "bright-synth",
+      name: "Bright Synth",
+      category: "lead",
+      oscillator: { type: "square", detune: 5, volume: -6 },
+      envelope: { attack: 0.001, decay: 0.15, sustain: 0.6, release: 0.2 },
+      filter: { type: "lowpass", cutoff: 3000, resonance: 2.5 },
+      effect: { type: "delay", wet: 0.15 },
+      meta: { bpm: 128, tags: ["synth", "bright", "lead"] }
+    },
+    {
+      id: "soft-organ",
+      name: "Soft Organ",
+      category: "organ",
+      oscillator: { type: "sine", detune: 0, volume: -9 },
+      envelope: { attack: 0.2, decay: 0.3, sustain: 0.9, release: 0.5 },
+      filter: { type: "lowpass", cutoff: 2000, resonance: 0.5 },
+      effect: { type: "reverb", wet: 0.3 },
+      meta: { bpm: 80, tags: ["organ", "soft", "church"] }
+    },
+    {
+      id: "electric-piano",
+      name: "Electric Piano",
+      category: "piano",
+      oscillator: { type: "triangle", detune: 0, volume: -7 },
+      envelope: { attack: 0.005, decay: 0.2, sustain: 0.5, release: 0.4 },
+      filter: { type: "lowpass", cutoff: 2500, resonance: 1.0 },
+      effect: { type: "reverb", wet: 0.2 },
+      meta: { bpm: 100, tags: ["piano", "electric", "keys"] }
     }
   ],
   arrangements: [
@@ -277,7 +357,7 @@ function InstrumentCard({ instrument, onPreview, onEdit, onAddToSequencer }) {
 }
 
 // Instrument Browser Component
-function InstrumentBrowser({ instruments, onPreview, onEdit, onAddToSequencer }) {
+function InstrumentBrowser({ instruments, onPreview, onEdit, onAddToSequencer, onCreateCustom }) {
   const [filter, setFilter] = useState('all');
 
   const filteredInstruments = filter === 'all' 
@@ -288,7 +368,12 @@ function InstrumentBrowser({ instruments, onPreview, onEdit, onAddToSequencer })
 
   return (
     <div className="left-panel">
-      <h2>Instruments</h2>
+      <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px'}}>
+        <h2 style={{margin: 0}}>Instruments</h2>
+        <button className="btn btn-primary btn-small" onClick={onCreateCustom} title="Create custom instrument">
+          🎨 Custom
+        </button>
+      </div>
       <div className="filter-controls">
         <select value={filter} onChange={(e) => setFilter(e.target.value)}>
           {categories.map(cat => (
@@ -378,6 +463,13 @@ function InstrumentEditor({ instrument, onSave, onClose }) {
             <option value="pad">Pad</option>
             <option value="percussive">Percussive</option>
             <option value="choir">Choir</option>
+            <option value="strings">Strings</option>
+            <option value="woodwind">Woodwind</option>
+            <option value="brass">Brass</option>
+            <option value="drums">Drums</option>
+            <option value="organ">Organ</option>
+            <option value="piano">Piano</option>
+            <option value="custom">Custom</option>
           </select>
         </div>
 
@@ -975,6 +1067,504 @@ function PatternLibraryModal({ patterns, onLoad, onClose }) {
   );
 }
 
+// Score Editor Component - Music notation sheet
+function ScoreEditor({ score, onScoreChange, instruments, onPlay }) {
+  const [selectedNote, setSelectedNote] = useState('C4');
+  const [selectedDuration, setSelectedDuration] = useState('4n');
+  const [timeSignature, setTimeSignature] = useState('4/4');
+  const [tempo, setTempo] = useState(120);
+  const [keySignature, setKeySignature] = useState('C');
+  const [selectedInstrument, setSelectedInstrument] = useState(instruments[0]?.id || '');
+  const canvasRef = useRef(null);
+
+  const notes = ['C', 'D', 'E', 'F', 'G', 'A', 'B'];
+  const octaves = [2, 3, 4, 5, 6];
+  const durations = [
+    { value: 'w', label: 'Whole' },
+    { value: '2n', label: 'Half' },
+    { value: '4n', label: 'Quarter' },
+    { value: '8n', label: 'Eighth' },
+    { value: '16n', label: 'Sixteenth' }
+  ];
+
+  useEffect(() => {
+    drawStaff();
+  }, [score]);
+
+  const drawStaff = () => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+
+    const ctx = canvas.getContext('2d');
+    const width = canvas.width = canvas.offsetWidth;
+    const height = canvas.height = 200;
+
+    ctx.clearRect(0, 0, width, height);
+    ctx.strokeStyle = getComputedStyle(document.documentElement).getPropertyValue('--color-text');
+    ctx.lineWidth = 1;
+
+    // Draw staff lines
+    const staffTop = 40;
+    const lineSpacing = 15;
+    for (let i = 0; i < 5; i++) {
+      const y = staffTop + i * lineSpacing;
+      ctx.beginPath();
+      ctx.moveTo(20, y);
+      ctx.lineTo(width - 20, y);
+      ctx.stroke();
+    }
+
+    // Draw treble clef (simplified)
+    ctx.font = '48px serif';
+    ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--color-text');
+    ctx.fillText('𝄞', 30, staffTop + 45);
+
+    // Draw notes
+    if (score && score.notes) {
+      let xPos = 100;
+      score.notes.forEach((note, index) => {
+        const noteY = getNotePosition(note.pitch);
+        
+        // Draw note head
+        ctx.beginPath();
+        ctx.ellipse(xPos, noteY, 8, 6, -0.3, 0, Math.PI * 2);
+        ctx.fillStyle = note.duration === 'w' || note.duration === '2n' 
+          ? getComputedStyle(document.documentElement).getPropertyValue('--color-background')
+          : getComputedStyle(document.documentElement).getPropertyValue('--color-text');
+        ctx.fill();
+        ctx.strokeStyle = getComputedStyle(document.documentElement).getPropertyValue('--color-text');
+        ctx.stroke();
+
+        // Draw stem for non-whole notes
+        if (note.duration !== 'w') {
+          ctx.beginPath();
+          ctx.moveTo(xPos + 7, noteY);
+          ctx.lineTo(xPos + 7, noteY - 35);
+          ctx.lineWidth = 1.5;
+          ctx.stroke();
+        }
+
+        xPos += 60;
+      });
+    }
+  };
+
+  const getNotePosition = (noteName) => {
+    // Map note names to staff positions
+    const noteMap = {
+      'C5': 25, 'B4': 32, 'A4': 40, 'G4': 47, 'F4': 55,
+      'E4': 62, 'D4': 70, 'C4': 77, 'B3': 85, 'A3': 92,
+      'G3': 100, 'F3': 107, 'E3': 115
+    };
+    return noteMap[noteName] || 77;
+  };
+
+  const handleAddNote = () => {
+    const newNote = {
+      pitch: selectedNote,
+      duration: selectedDuration,
+      time: score.notes ? score.notes.length * 0.5 : 0
+    };
+    
+    const updatedScore = {
+      ...score,
+      notes: [...(score.notes || []), newNote],
+      tempo: tempo,
+      timeSignature: timeSignature,
+      keySignature: keySignature,
+      instrument: selectedInstrument
+    };
+    
+    onScoreChange(updatedScore);
+  };
+
+  const handleRemoveNote = (index) => {
+    const updatedScore = {
+      ...score,
+      notes: score.notes.filter((_, i) => i !== index)
+    };
+    onScoreChange(updatedScore);
+  };
+
+  const handleClearScore = () => {
+    const updatedScore = {
+      ...score,
+      notes: []
+    };
+    onScoreChange(updatedScore);
+  };
+
+  return (
+    <div className="score-editor">
+      <div className="score-header">
+        <h2>🎼 Score Editor</h2>
+        <div className="score-controls">
+          <div className="control-group">
+            <label>Tempo (BPM):</label>
+            <input
+              type="number"
+              min="40"
+              max="240"
+              value={tempo}
+              onChange={(e) => setTempo(parseInt(e.target.value) || 120)}
+            />
+          </div>
+          <div className="control-group">
+            <label>Time Signature:</label>
+            <select value={timeSignature} onChange={(e) => setTimeSignature(e.target.value)}>
+              <option value="4/4">4/4</option>
+              <option value="3/4">3/4</option>
+              <option value="6/8">6/8</option>
+              <option value="2/4">2/4</option>
+            </select>
+          </div>
+          <div className="control-group">
+            <label>Key:</label>
+            <select value={keySignature} onChange={(e) => setKeySignature(e.target.value)}>
+              <option value="C">C Major</option>
+              <option value="G">G Major</option>
+              <option value="D">D Major</option>
+              <option value="F">F Major</option>
+              <option value="Am">A Minor</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div className="staff-container">
+        <canvas ref={canvasRef} className="music-staff" />
+      </div>
+
+      <div className="note-input-panel">
+        <h3>Add Notes</h3>
+        <div className="note-input-controls">
+          <div className="control-group">
+            <label>Instrument:</label>
+            <select value={selectedInstrument} onChange={(e) => setSelectedInstrument(e.target.value)}>
+              {instruments.map(inst => (
+                <option key={inst.id} value={inst.id}>{inst.name}</option>
+              ))}
+            </select>
+          </div>
+          
+          <div className="control-group">
+            <label>Note:</label>
+            <select value={selectedNote} onChange={(e) => setSelectedNote(e.target.value)}>
+              {octaves.map(octave =>
+                notes.map(note => (
+                  <option key={`${note}${octave}`} value={`${note}${octave}`}>
+                    {note}{octave}
+                  </option>
+                ))
+              ).flat()}
+            </select>
+          </div>
+
+          <div className="control-group">
+            <label>Duration:</label>
+            <select value={selectedDuration} onChange={(e) => setSelectedDuration(e.target.value)}>
+              {durations.map(dur => (
+                <option key={dur.value} value={dur.value}>{dur.label}</option>
+              ))}
+            </select>
+          </div>
+
+          <button className="btn btn-primary" onClick={handleAddNote}>
+            ➕ Add Note
+          </button>
+          <button className="btn btn-secondary" onClick={handleClearScore}>
+            🗑️ Clear
+          </button>
+          <button className="btn btn-primary" onClick={onPlay}>
+            ▶ Play Score
+          </button>
+        </div>
+      </div>
+
+      {score.notes && score.notes.length > 0 && (
+        <div className="notes-list">
+          <h3>Notes in Score ({score.notes.length})</h3>
+          <div className="notes-grid">
+            {score.notes.map((note, index) => (
+              <div key={index} className="note-item">
+                <span>{index + 1}. {note.pitch} ({note.duration})</span>
+                <button 
+                  className="btn btn-secondary btn-small"
+                  onClick={() => handleRemoveNote(index)}
+                >
+                  ✕
+                </button>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+// Custom Instrument Maker Modal
+function CustomInstrumentMaker({ onSave, onClose, instruments }) {
+  const [sampleFile, setSampleFile] = useState(null);
+  const [sampleUrl, setSampleUrl] = useState(null);
+  const [baseNote, setBaseNote] = useState('C4');
+  const [instrumentName, setInstrumentName] = useState('');
+  const [category, setCategory] = useState('custom');
+  const [isRecording, setIsRecording] = useState(false);
+  const [audioBuffer, setAudioBuffer] = useState(null);
+  const [pitchShift, setPitchShift] = useState(0);
+  const mediaRecorderRef = useRef(null);
+  const audioChunksRef = useRef([]);
+  const playerRef = useRef(null);
+
+  const noteToFrequency = (note) => {
+    const noteMap = {
+      'C': 0, 'C#': 1, 'D': 2, 'D#': 3, 'E': 4, 'F': 5,
+      'F#': 6, 'G': 7, 'G#': 8, 'A': 9, 'A#': 10, 'B': 11
+    };
+    const octave = parseInt(note.slice(-1));
+    const noteName = note.slice(0, -1);
+    const semitone = noteMap[noteName] + (octave * 12) - 57; // A4 = 440Hz = 0
+    return 440 * Math.pow(2, semitone / 12);
+  };
+
+  const handleFileUpload = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setSampleFile(file);
+      const url = URL.createObjectURL(file);
+      setSampleUrl(url);
+      
+      // Load audio buffer
+      const reader = new FileReader();
+      reader.onload = async (event) => {
+        try {
+          const audioContext = Tone.context.rawContext;
+          const arrayBuffer = event.target.result;
+          const buffer = await audioContext.decodeAudioData(arrayBuffer);
+          setAudioBuffer(buffer);
+        } catch (error) {
+          console.error('Error decoding audio:', error);
+          alert('Error loading audio file. Please try another file.');
+        }
+      };
+      reader.readAsArrayBuffer(file);
+    }
+  };
+
+  const startRecording = async () => {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      mediaRecorderRef.current = new MediaRecorder(stream);
+      audioChunksRef.current = [];
+
+      mediaRecorderRef.current.ondataavailable = (event) => {
+        audioChunksRef.current.push(event.data);
+      };
+
+      mediaRecorderRef.current.onstop = async () => {
+        const audioBlob = new Blob(audioChunksRef.current, { type: 'audio/webm' });
+        const url = URL.createObjectURL(audioBlob);
+        setSampleUrl(url);
+        
+        // Convert to buffer
+        const arrayBuffer = await audioBlob.arrayBuffer();
+        const audioContext = Tone.context.rawContext;
+        const buffer = await audioContext.decodeAudioData(arrayBuffer);
+        setAudioBuffer(buffer);
+        
+        stream.getTracks().forEach(track => track.stop());
+      };
+
+      mediaRecorderRef.current.start();
+      setIsRecording(true);
+    } catch (error) {
+      console.error('Error accessing microphone:', error);
+      alert('Could not access microphone. Please check permissions.');
+    }
+  };
+
+  const stopRecording = () => {
+    if (mediaRecorderRef.current && isRecording) {
+      mediaRecorderRef.current.stop();
+      setIsRecording(false);
+    }
+  };
+
+  const handlePreview = async () => {
+    if (!audioBuffer) {
+      alert('Please upload or record a sample first');
+      return;
+    }
+
+    await Tone.start();
+    
+    // Clean up existing player
+    if (playerRef.current) {
+      playerRef.current.dispose();
+    }
+
+    // Create a player with the buffer
+    const player = new Tone.Player(audioBuffer).toDestination();
+    player.playbackRate = Math.pow(2, pitchShift / 12);
+    playerRef.current = player;
+    
+    player.start();
+  };
+
+  const handleSave = () => {
+    if (!instrumentName.trim()) {
+      alert('Please enter an instrument name');
+      return;
+    }
+    if (!audioBuffer) {
+      alert('Please upload or record a sample first');
+      return;
+    }
+
+    // Create a custom instrument definition
+    const customInstrument = {
+      id: `custom-${Date.now()}`,
+      name: instrumentName,
+      category: category,
+      isCustom: true,
+      baseNote: baseNote,
+      sampleUrl: sampleUrl,
+      audioBuffer: audioBuffer,
+      oscillator: { type: "sine", detune: 0, volume: -6 },
+      envelope: { attack: 0.01, decay: 0.2, sustain: 0.8, release: 0.5 },
+      filter: { type: "lowpass", cutoff: 2000, resonance: 1.0 },
+      effect: { type: "none", wet: 0 },
+      meta: { bpm: 120, tags: ["custom", "sampled"] }
+    };
+
+    // Save to localStorage
+    try {
+      const customInstruments = JSON.parse(localStorage.getItem('customInstruments') || '[]');
+      customInstruments.push({
+        ...customInstrument,
+        audioBuffer: null, // Can't serialize AudioBuffer
+        sampleData: Array.from(audioBuffer.getChannelData(0)).slice(0, 1000) // Store sample for reference
+      });
+      localStorage.setItem('customInstruments', JSON.stringify(customInstruments));
+    } catch (error) {
+      console.error('Error saving to localStorage:', error);
+    }
+
+    onSave(customInstrument);
+  };
+
+  return (
+    <div className="modal-overlay" onClick={onClose}>
+      <div className="modal custom-instrument-modal" onClick={(e) => e.stopPropagation()}>
+        <h2>🎨 Custom Instrument Maker</h2>
+        
+        <div className="form-group">
+          <label>Instrument Name</label>
+          <input
+            type="text"
+            value={instrumentName}
+            onChange={(e) => setInstrumentName(e.target.value)}
+            placeholder="My Custom Instrument"
+          />
+        </div>
+
+        <div className="form-group">
+          <label>Category</label>
+          <select value={category} onChange={(e) => setCategory(e.target.value)}>
+            <option value="custom">Custom</option>
+            <option value="lead">Lead</option>
+            <option value="bass">Bass</option>
+            <option value="pad">Pad</option>
+            <option value="strings">Strings</option>
+            <option value="woodwind">Woodwind</option>
+            <option value="brass">Brass</option>
+            <option value="drums">Drums</option>
+          </select>
+        </div>
+
+        <div className="section-title">Sample Source</div>
+        
+        <div className="sample-source-controls">
+          <div className="form-group">
+            <label>Upload Audio File</label>
+            <input
+              type="file"
+              accept="audio/*"
+              onChange={handleFileUpload}
+              disabled={isRecording}
+            />
+          </div>
+
+          <div className="form-group">
+            <label>Or Record Sample</label>
+            <div style={{display: 'flex', gap: '8px'}}>
+              {!isRecording ? (
+                <button className="btn btn-primary" onClick={startRecording}>
+                  🎤 Start Recording
+                </button>
+              ) : (
+                <button className="btn btn-secondary" onClick={stopRecording}>
+                  ⏹ Stop Recording
+                </button>
+              )}
+            </div>
+          </div>
+        </div>
+
+        {sampleUrl && (
+          <>
+            <div className="section-title">Sample Configuration</div>
+            
+            <div className="form-group">
+              <label>Base Note (what note is this sample?)</label>
+              <select value={baseNote} onChange={(e) => setBaseNote(e.target.value)}>
+                {['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'].map(note =>
+                  [2, 3, 4, 5, 6].map(octave => (
+                    <option key={`${note}${octave}`} value={`${note}${octave}`}>
+                      {note}{octave}
+                    </option>
+                  ))
+                ).flat()}
+              </select>
+            </div>
+
+            <div className="form-group">
+              <label>Pitch Shift Preview <span className="slider-value">{pitchShift > 0 ? '+' : ''}{pitchShift} semitones</span></label>
+              <input
+                type="range"
+                min="-12"
+                max="12"
+                step="1"
+                value={pitchShift}
+                onChange={(e) => setPitchShift(parseInt(e.target.value))}
+              />
+            </div>
+
+            <div className="sample-info">
+              <p>✓ Sample loaded successfully</p>
+              <p>Base note: <strong>{baseNote}</strong> ({Math.round(noteToFrequency(baseNote))} Hz)</p>
+              <p>The app will automatically pitch-shift this sample to play other notes</p>
+            </div>
+          </>
+        )}
+
+        <div className="modal-actions">
+          <button className="btn btn-primary" onClick={handlePreview} disabled={!audioBuffer}>
+            ▶ Preview
+          </button>
+          <button className="btn btn-primary" onClick={handleSave} disabled={!audioBuffer}>
+            💾 Save Instrument
+          </button>
+          <button className="btn btn-secondary" onClick={onClose}>
+            Cancel
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 // Main App Component
 function App() {
   const [instruments, setInstruments] = useState(initialData.instruments);
@@ -986,6 +1576,16 @@ function App() {
   const [editingInstrument, setEditingInstrument] = useState(null);
   const [statusMessage, setStatusMessage] = useState('');
   const [showStatus, setShowStatus] = useState(false);
+  const [showCustomInstrumentMaker, setShowCustomInstrumentMaker] = useState(false);
+  
+  // Score Editor State
+  const [currentScore, setCurrentScore] = useState({
+    notes: [],
+    tempo: 120,
+    timeSignature: '4/4',
+    keySignature: 'C',
+    instrument: 'lead-saw-bright'
+  });
   
   // Live Coding State
   const [activeTab, setActiveTab] = useState('composition');
@@ -1008,17 +1608,87 @@ function App() {
     Tone.Transport.bpm.value = bpm;
   }, [bpm]);
 
-  // Space bar to toggle play/stop
+  // Load custom instruments from localStorage on mount
+  useEffect(() => {
+    try {
+      const customInstruments = JSON.parse(localStorage.getItem('customInstruments') || '[]');
+      if (customInstruments.length > 0) {
+        setInstruments(prev => [...prev, ...customInstruments.map(inst => ({
+          ...inst,
+          isCustom: true
+        }))]);
+      }
+    } catch (error) {
+      console.error('Error loading custom instruments:', error);
+    }
+  }, []);
+
+  // Keyboard shortcuts - Space bar and Cmd/Ctrl combinations
   useEffect(() => {
     const handleKeyPress = (e) => {
-      if (e.code === 'Space' && e.target.tagName !== 'INPUT') {
+      // Space bar to toggle play/stop (only when not in input fields)
+      if (e.code === 'Space' && e.target.tagName !== 'INPUT' && e.target.tagName !== 'TEXTAREA') {
         e.preventDefault();
-        handlePlayStop();
+        if (activeTab === 'composition') {
+          handlePlayStop();
+        } else if (activeTab === 'liveCoding') {
+          isLivePlaying ? handleLiveStop() : handleLivePlay();
+        }
+      }
+      
+      // Cmd/Ctrl based shortcuts
+      const isModKey = e.metaKey || e.ctrlKey; // metaKey for Mac, ctrlKey for Windows/Linux
+      
+      if (isModKey) {
+        switch(e.key.toLowerCase()) {
+          case 'n':
+            // Cmd/Ctrl + N: Create new score
+            e.preventDefault();
+            const newArrangement = {
+              id: `arrangement-${Date.now()}`,
+              name: 'New Score',
+              bpm: 120,
+              tracks: []
+            };
+            setCurrentArrangement(newArrangement);
+            setArrangements([...arrangements, newArrangement]);
+            showStatusMessage('New score created!');
+            break;
+          
+          case 's':
+            // Cmd/Ctrl + S: Save composition
+            e.preventDefault();
+            handleExportData();
+            break;
+          
+          case 'p':
+            // Cmd/Ctrl + P: Play/Pause
+            e.preventDefault();
+            if (activeTab === 'composition') {
+              handlePlayStop();
+            } else if (activeTab === 'liveCoding') {
+              isLivePlaying ? handleLiveStop() : handleLivePlay();
+            }
+            break;
+          
+          case 'z':
+            // Cmd/Ctrl + Z: Undo (basic implementation)
+            e.preventDefault();
+            // Simple undo: reload from arrangements if available
+            if (arrangements.length > 0) {
+              setCurrentArrangement(arrangements[0]);
+              showStatusMessage('Undo: Reverted to previous state');
+            }
+            break;
+          
+          default:
+            break;
+        }
       }
     };
     window.addEventListener('keydown', handleKeyPress);
     return () => window.removeEventListener('keydown', handleKeyPress);
-  }, [isPlaying, currentArrangement]);
+  }, [isPlaying, isLivePlaying, currentArrangement, arrangements, activeTab]);
 
   const showStatusMessage = (msg) => {
     setStatusMessage(msg);
@@ -1068,6 +1738,57 @@ function App() {
     };
     setCurrentArrangement(updatedArrangement);
     showStatusMessage(`Added ${instrument.name} to sequencer`);
+  };
+
+  const handleSaveCustomInstrument = (instrument) => {
+    setInstruments([...instruments, instrument]);
+    setShowCustomInstrumentMaker(false);
+    showStatusMessage(`Custom instrument "${instrument.name}" created!`);
+  };
+
+  const handleScoreChange = (updatedScore) => {
+    setCurrentScore(updatedScore);
+  };
+
+  const handlePlayScore = async () => {
+    if (!currentScore.notes || currentScore.notes.length === 0) {
+      showStatusMessage('No notes to play');
+      return;
+    }
+
+    await Tone.start();
+    Tone.Transport.bpm.value = currentScore.tempo;
+
+    const instrument = instruments.find(i => i.id === currentScore.instrument);
+    if (!instrument) {
+      showStatusMessage('Instrument not found');
+      return;
+    }
+
+    const synthBundle = createSynth(instrument);
+    
+    // Create a sequence of notes
+    const part = new Tone.Part((time, note) => {
+      synthBundle.synth.triggerAttackRelease(note.pitch, note.duration, time);
+    }, currentScore.notes.map((note, i) => ({
+      time: i * 0.5, // Simple timing
+      pitch: note.pitch,
+      duration: note.duration
+    })));
+
+    part.start(0);
+    Tone.Transport.start();
+    
+    showStatusMessage('Playing score...');
+
+    // Stop after playing
+    setTimeout(() => {
+      Tone.Transport.stop();
+      part.dispose();
+      synthBundle.synth.dispose();
+      synthBundle.filter.dispose();
+      if (synthBundle.effect) synthBundle.effect.dispose();
+    }, currentScore.notes.length * 500 + 1000);
   };
 
   const handleRemoveTrack = (trackIndex) => {
@@ -1351,6 +2072,16 @@ function App() {
           🎼 Composition
         </button>
         <button 
+          className={`tab-button ${activeTab === 'scoreEditor' ? 'active' : ''}`}
+          onClick={() => {
+            setActiveTab('scoreEditor');
+            if (isPlaying) handlePlayStop();
+            if (isLivePlaying) handleLiveStop();
+          }}
+        >
+          📝 Score Editor
+        </button>
+        <button 
           className={`tab-button ${activeTab === 'liveCoding' ? 'active' : ''}`}
           onClick={() => {
             setActiveTab('liveCoding');
@@ -1369,6 +2100,7 @@ function App() {
               onPreview={handlePreview}
               onEdit={handleEdit}
               onAddToSequencer={handleAddToSequencer}
+              onCreateCustom={() => setShowCustomInstrumentMaker(true)}
             />
             
             <div className="right-panel">
@@ -1381,6 +2113,17 @@ function App() {
               />
             </div>
           </>
+        )}
+
+        {activeTab === 'scoreEditor' && (
+          <div className="score-editor-container">
+            <ScoreEditor
+              score={currentScore}
+              onScoreChange={handleScoreChange}
+              instruments={instruments}
+              onPlay={handlePlayScore}
+            />
+          </div>
         )}
 
         {activeTab === 'liveCoding' && (
@@ -1469,6 +2212,14 @@ function App() {
           patterns={savedPatterns}
           onLoad={handleLoadPattern}
           onClose={() => setShowPatternLibrary(false)}
+        />
+      )}
+
+      {showCustomInstrumentMaker && (
+        <CustomInstrumentMaker
+          onSave={handleSaveCustomInstrument}
+          onClose={() => setShowCustomInstrumentMaker(false)}
+          instruments={instruments}
         />
       )}
     </div>
